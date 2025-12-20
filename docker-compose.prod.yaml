@@ -1,0 +1,24 @@
+name: 'template-microservice'
+services:
+  template:
+    container_name: template
+    build:
+      context: ./
+      dockerfile: Dockerfile.prod
+    env_file: ./.env
+    volumes:
+      - ./node_logs:/usr/src/app/dist/.logs
+    healthcheck:
+      test: ['CMD', 'wget', 'http://template:3060/health']
+      interval: 10s
+      timeout: 15s
+      retries: 10
+      start_period: 40s
+    networks:
+      iam-service_main-network:
+        ipv4_address: 10.10.0.24
+    hostname: template
+    restart: always
+networks:
+  iam-service_main-network:
+    external: true
