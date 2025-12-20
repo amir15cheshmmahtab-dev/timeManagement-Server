@@ -1,0 +1,31 @@
+FROM node:20.9.0-alpine AS build-image
+WORKDIR /usr/src/app
+COPY package*.json ./
+COPY tsconfig.json ./
+COPY ./src ./src
+COPY ./prisma ./prisma
+COPY ./.npmrc .
+COPY ./.env .
+RUN npm ci
+RUN npm run prisma:generate
+# RUN npm run prisma:migrate:create
+# RUN npm run prisma:migrate:prod
+# RUN npm run prisma:execute:triggers
+# RUN npm run prisma:seed
+RUN npx tsc -p ./tsconfig.json
+RUN npx tsc-alias
+
+FROM node:20.9.0-alpine
+WORKDIR /usr/src/app
+COPY package*.json ./
+COPY --from=build-image ./usr/src/app/dist ./dist
+RUN mkdir -p ./dist/.logs
+COPY ./.npmrc .
+COPY ./certs .
+RUN npm ci --production
+COPY . .
+RUN npm install pm2 -g
+
+EXPOSE 3060
+
+CMD pm2-runtime process.prod.yaml
