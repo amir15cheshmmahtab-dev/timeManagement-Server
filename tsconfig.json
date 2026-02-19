@@ -9,6 +9,8 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "baseUrl": ".",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "paths": {
       "@/*": ["src/*"],
       "@exceptions/*": ["src/exceptions/*"],
