@@ -7,6 +7,10 @@ RUN npm i
 RUN npx tsc -p ./tsconfig.json
 RUN npx tsc-alias
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dev
 FROM node:21
 WORKDIR /usr/src/app
 COPY package*.json ./

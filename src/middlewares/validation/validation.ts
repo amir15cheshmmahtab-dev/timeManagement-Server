@@ -50,6 +50,7 @@ const validationMiddleware = (
 };
 
 const validationErrorCreation = (
+<<<<<<< HEAD
   errors: ValidationError[]
 ) => {
   let errorObject = {};
@@ -59,6 +60,19 @@ const validationErrorCreation = (
       errorObject = { ...errorObject, ...childErrors };
     }
     if (!isEmpty(error.constraints)) {
+=======
+  errors?: ValidationError[]
+): { [key: string]: string } => {
+  if (!errors || errors.length === 0) return {};
+
+  let errorObject: { [key: string]: string } = {};
+  for (const error of errors) {
+    if (error.children && error.children.length > 0) {
+      const childErrors = validationErrorCreation(error.children);
+      errorObject = { ...errorObject, ...childErrors };
+    }
+    if (error.constraints && Object.keys(error.constraints).length > 0) {
+>>>>>>> dev
       const errorMessage = Object.values(error.constraints).join(', ');
       errorObject = {
         ...errorObject,
