@@ -1,5 +1,5 @@
 import { IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString, IsInt, Min, Max } from 'class-validator';
-import { BreakType } from '../data-access/attendance.model';
+import { BreakType } from '../data-access/Attendance.model';
 
 export class ValidateCheckIn {
     @IsNotEmpty()

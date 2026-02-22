@@ -22,7 +22,7 @@ class Express {
    */
   public express: express.Application;
 
-  public listener: Server;
+  public listener!: Server;
   /**
    * Initializes the express server
    */
@@ -51,7 +51,7 @@ class Express {
    */
   private mountRoutes(): void {
     this.express = ApiRoutes.mountApi(this.express);
-    this.express = ApiRoutes.mountMcp(this.express);
+    // this.express = ApiRoutes.mountMcp(this.express);
   }
   //
   /**

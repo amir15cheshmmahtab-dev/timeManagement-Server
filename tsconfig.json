@@ -18,11 +18,14 @@
       "@services/*": ["src/services/*"],
       "@middlewares/*": ["src/middlewares/*"],
       "@models/*": ["src/models/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@providers/*": ["src/providers/*"],
+      "@modules/*": ["src/modules/*"],
+      "@shared/*": ["src/shared/*"],
+      "@interfaces/*": ["src/interfaces/*"]
     },
     "skipLibCheck": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }
-

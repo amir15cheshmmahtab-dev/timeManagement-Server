@@ -1,4 +1,4 @@
-import { AttendanceModel, IAttendance } from '../data-access/attendance.model';
+import { AttendanceModel, IAttendance } from '../data-access/Attendance.model';
 import {
     ICheckInPayload,
     ICheckOutPayload,

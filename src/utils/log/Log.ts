@@ -19,6 +19,11 @@ class Log {
     const _timeString = `${this.today.getHours()}:${this.today.getMinutes()}:${this.today.getSeconds()}`;
 
     this.baseDir = path.join(__dirname, '../../.logs/');
+    try {
+      fs.mkdirSync(this.baseDir, { recursive: true });
+    } catch (e) {
+      // ignore mkdir errors, logging happens elsewhere
+    }
     this.fileName = `${_dateString}.log`;
     this.linePrefix = `[${_dateString} ${_timeString}]`;
   }

@@ -1,25 +1,53 @@
-version: '3.2'
-name: 'template-microservice'
 services:
-  template:
-    container_name: template
+
+  app:
     build:
-      context: ./
-      dockerfile: Dockerfile
-    env_file: ./.env
+      context: .
+      target: production
     ports:
-      - "3060:3060"
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://mongo:27017/time-management
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── MongoDB ──────────────────────────────────────────────
+  mongo:
+    image: mongo:8
+    ports:
+      - "27017:27017"
     volumes:
-      - ./docker_logs:/usr/src/app/logs
-      - ./node_logs:/usr/src/app/dist/.logs
+      - mongo_data:/data/db
     healthcheck:
-      test: ['CMD', 'wget', 'http://template/health']
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 10s
-      timeout: 15s
-      retries: 10
-      start_period: 40s
-    hostname: template.dev
-    restart: always
-networks:
-  services_main-network:
-    external: true
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ── Redis ────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
+  redis_data:

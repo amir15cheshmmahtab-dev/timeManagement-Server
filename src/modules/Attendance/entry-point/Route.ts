@@ -1,26 +1,31 @@
 import { Router } from 'express';
 import { attendanceController } from './attendance.controller';
-import { validateRequest } from '../../shared/middlewares/validateRequest'; 
-import {validateCheckIn,validateCheckOut,validateStartBreak,validateEndBreak,} from './attendance.validation';
+import validationMiddleware from "@/middlewares/validation/validation";
+import { authenticate } from "@/shared/middleware/authenticate";
 
-const router = Router();
+import {
+    validateCheckIn,
+    validateCheckOut,
+    validateStartBreak,
+    validateEndBreak,
+} from './attendance.validation';
 
-// POST /attendance/check-in
-router.post('/check-in',    validateRequest(validateCheckIn),    attendanceController.checkIn);
+class AttendanceRoute {
+    public path = '/v1/attendance';
+    public router = Router();
+    public controller = attendanceController;
+    constructor() {
+        this.initializeRoutes();
+    }
 
-// POST /attendance/check-out
-router.post('/check-out',   validateRequest(validateCheckOut),   attendanceController.checkOut);
+    private initializeRoutes() {
+        this.router.post(`${this.path}/check-in`, [authenticate,validationMiddleware(validateCheckIn)], this.controller.checkIn);
+        this.router.post(`${this.path}/check-out`, [authenticate,validationMiddleware(validateCheckOut)], this.controller.checkOut);
+        this.router.post(`${this.path}/break/start`, [authenticate,validationMiddleware(validateStartBreak)], this.controller.startBreak);
+        this.router.post(`${this.path}/break/end`, [authenticate,validationMiddleware(validateEndBreak)], this.controller.endBreak);
+        this.router.get(`${this.path}/:userId/today`, this.controller.getToday);
+        this.router.get(`${this.path}/:userId/history`, this.controller.getHistory);
+    }
+}
 
-// POST /attendance/break/start
-router.post('/break/start', validateRequest(validateStartBreak), attendanceController.startBreak);
-
-// POST /attendance/break/end
-router.post('/break/end',   validateRequest(validateEndBreak),   attendanceController.endBreak);
-
-// GET /attendance/:userId/today
-router.get('/:userId/today',   attendanceController.getToday);
-
-// GET /attendance/:userId/history?month=2&year=2025
-router.get('/:userId/history', attendanceController.getHistory);
-
-export default router;
+export default AttendanceRoute; 
