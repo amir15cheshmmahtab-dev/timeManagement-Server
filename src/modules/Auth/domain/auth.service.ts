@@ -10,9 +10,7 @@ import {
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || 'access_secret';
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || 'refresh_secret';
 
-// Session timeout: 15 minutes of inactivity
 const ACCESS_TOKEN_EXPIRES_IN = '15m';
-// Refresh token lives longer
 const REFRESH_TOKEN_EXPIRES_IN = '7d';
 
 class AuthService {
@@ -132,9 +130,6 @@ class AuthService {
     await UserModel.findByIdAndUpdate(userId, { lastActivity: new Date() });
   }
 
-  /**
-   * Get user by ID (for profile, guards, etc.)
-   */
   async findById(userId: string): Promise<IUser | null> {
     return UserModel.findById(userId);
   }
