@@ -176,6 +176,7 @@ class Locals {
       mongoPassword,
       accessToken,
       refreshToken,
+      mongoUri: `mongodb://${mongoUser && mongoPassword ? `${mongoUser}:${mongoPassword}@` : ''}${mongoHost}:${mongoPort}/${mongoDatabase}`,
     };
   }
 
