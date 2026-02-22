@@ -1,26 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { AppError } from '../errors/AppError';
-import { AdminModel } from '../../modules/Admin/data-access/admin.model';
+import UserModel from '../../modules/Auth/data-access/auth.model';
 
 interface JwtPayload {
   id: string;
   role: string;
-  department?: string;
   iat: number;
   exp: number;
 }
 
-// Extend Express Request type
-declare global {
-  namespace Express {
-    interface Request {
-      user?: {
-        id: string;
-        role: string;
-        department?: string;
-      };
-    }
+// ✅ Module augmentation instead of namespace
+declare module 'express-serve-static-core' {
+  interface Request {
+    user?: {
+      id: string;
+      role: string;
+    };
   }
 }
 
@@ -44,16 +40,14 @@ export const authenticate = async (
 
     const decoded = jwt.verify(token, secret) as JwtPayload;
 
-    // Check if user still exists and is active
-    const user = await AdminModel.findById(decoded.id).select('isActive role department');
-    if (!user || !user.isActive) {
-      return next(new AppError('User no longer exists or is deactivated', 401));
+    const user = await UserModel.findById(decoded.id).select('role');
+    if (!user) {
+      return next(new AppError('User no longer exists', 401));
     }
 
     req.user = {
       id: decoded.id,
       role: user.role,
-      department: user.department?.toString(),
     };
 
     next();

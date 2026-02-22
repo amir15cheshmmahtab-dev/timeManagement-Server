@@ -1,25 +1,28 @@
-FROM node:21 as build-image
-WORKDIR /usr/src/app
+# ─── Stage 1: Builder ─────────────────────────────────────
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
 COPY package*.json ./
-COPY tsconfig.json ./
-COPY ./src ./src
-RUN npm i
-RUN npx tsc -p ./tsconfig.json
-RUN npx tsc-alias
+RUN npm ci
 
-<<<<<<< HEAD
-=======
+COPY tsconfig*.json ./
+COPY src ./src
 
->>>>>>> dev
-FROM node:21
-WORKDIR /usr/src/app
+RUN npm run build
+
+# ─── Stage 2: Production ──────────────────────────────────
+FROM node:20-alpine AS production
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
 COPY package*.json ./
-COPY --from=build-image ./usr/src/app/dist ./dist
-RUN mkdir -p ./dist/.logs
-RUN npm i --production
-COPY . .
-RUN npm install pm2 -g
+RUN npm ci --omit=dev
 
-EXPOSE 3060
+COPY --from=builder /app/dist ./dist
 
-CMD pm2-runtime process.yaml
+EXPOSE 3000
+
+CMD ["node", "dist/index.js"]

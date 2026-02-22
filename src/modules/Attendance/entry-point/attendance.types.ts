@@ -1,9 +1,9 @@
-import { AttendanceStatus, BreakType } from '../data-access/attendance.model';
+import { AttendanceStatus, BreakType } from "../data-access/Attendance.model";
 
 export interface ICheckInPayload {
     userId: string;
     isWfh: boolean;
-    notes?: string;
+    notes?: string | null;
 }
 
 export interface ICheckOutPayload {

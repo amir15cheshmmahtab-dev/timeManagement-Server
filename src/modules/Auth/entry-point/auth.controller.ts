@@ -18,7 +18,7 @@ class AuthController {
     } catch (err: any) {
       next(err);
     }
-  };
+  }
 
     public async login (req: Request, res: Response, next: NextFunction) {
     try {
@@ -32,7 +32,7 @@ class AuthController {
     } catch (err: any) {
       res.status(401).json({ message: err.message });
     }
-  };
+  }
 
     public async logout (req: Request, res: Response, next: NextFunction) {
     try {
@@ -46,7 +46,7 @@ class AuthController {
     } catch (err: any) {
       next(err);
     }
-  };
+  }
 
   // Auto login with refresh token
     public async refresh (req: Request, res: Response, next: NextFunction) {
@@ -61,7 +61,7 @@ class AuthController {
     } catch (err: any) {
       res.status(401).json({ message: err.message });
     }
-  };
+  }
 
 }
 

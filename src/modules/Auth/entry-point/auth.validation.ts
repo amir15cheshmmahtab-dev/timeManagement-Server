@@ -21,6 +21,15 @@ export class ValidateLogout {
 
 export const validateLogout = ValidateLogout;
 
+export class ValidateLogin {
+    @IsNotEmpty()
+    @IsString()
+    userId!: string;
+}
+
+export const validateLogin = ValidateLogin;
+
+
 export class ValidateRefreshToken {
     @IsNotEmpty()
     @IsString()

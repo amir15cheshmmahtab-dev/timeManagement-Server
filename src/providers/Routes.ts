@@ -7,11 +7,13 @@ import Locals from './Locals';
 import Log from '@utils/log/Log';
 
 import { Routes } from '@interfaces/routes/routes';
-import TestRoute from '@modules/test/V1/entry-points/api/test.routes';
+import AttendanceRoute from '@/modules/Attendance/entry-point/Route';
+import AuthRoute from '@/modules/Auth/entry-point/route';
 
 class ApiRoutes {
   routes: Array<Routes> = [
-    new TestRoute(),
+    new AttendanceRoute(),
+    new AuthRoute(),
   ];
 
   private initializeRoutes(): Array<Router> {

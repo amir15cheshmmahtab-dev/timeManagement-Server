@@ -1,11 +1,12 @@
 {
-  "name": "template",
+  "name": "time-management",
   "version": "1.0.0",
-  "description": "davandegan template",
+  "description": "Amir template",
   "main": "dist",
   "scripts": {
     "build": "npx tsc",
     "start:DEV": "ts-node -r tsconfig-paths/register --transpile-only src/index.ts",
+    "seeder": "ts-node -r tsconfig-paths/register src/seed/seeder.ts",
     "start": "node ./dist/index.js",
     "start:prod": "concurrently -c \"auto\" \"npm:build && node ./dist/index.js\"",
     "lint": "eslint . --ext .ts",
@@ -13,7 +14,7 @@
     "start:dev": "concurrently -c \"auto\" \"npm:development\""
   },
   "keywords": [],
-  "author": "barbod naj",
+  "author": "amir ch",
   "license": "ISC",
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.0",
