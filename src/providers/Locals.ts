@@ -148,7 +148,7 @@ class Locals {
 
 
     const mongoHost = process.env.MONGO_HOST || 'localhost';
-    const mongoPort = process.env.MONGO_PORT || '27017';
+    const mongoPort = process.env.MONGO_PORT || '27018';
     const mongoDatabase = process.env.MONGO_DATABASE || 'test';
     const mongoUser = process.env.MONGO_USER || '';
     const mongoPassword = process.env.MONGO_PASSWORD || '';
@@ -176,7 +176,7 @@ class Locals {
       mongoPassword,
       accessToken,
       refreshToken,
-      mongoUri: `mongodb://${mongoUser && mongoPassword ? `${mongoUser}:${mongoPassword}@` : ''}${mongoHost}:${mongoPort}/${mongoDatabase}`,
+      mongoUri: `mongodb://${mongoUser && mongoPassword ? `${mongoUser}:${mongoPassword}@` : ''}${mongoHost}:${mongoPort}/${mongoDatabase}?authSource=admin`,
     };
   }
 
